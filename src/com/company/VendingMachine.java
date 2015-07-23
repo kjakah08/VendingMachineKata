@@ -1,34 +1,49 @@
 package com.company;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by KJA on 7/22/2015.
  */
 public class VendingMachine {
 
-    //
+    DecimalFormat df = new DecimalFormat("0.00");
+    public static double currencyInMachine = 0.00;
+
     public String insertCoin(String coinInserted) {
 
-        String santizeInputCoin = coinInserted.toLowerCase().trim();
+        String sanitizeInputCoin = coinInserted.toLowerCase().trim();
         String output = "";
 
-        if (santizeInputCoin == "penny") {
+        if (sanitizeInputCoin == "penny") {
             output = "Rejected placed in coin return";
 
-        } else if (santizeInputCoin == "nikel" || santizeInputCoin == "dime" || santizeInputCoin == "quarter") {
-            switch (santizeInputCoin) {
-                case "nikel": output = "Coin Accepted total is: ";
+        } else if (sanitizeInputCoin == "nikel" || sanitizeInputCoin == "dime" || sanitizeInputCoin == "quarter") {
+            switch (sanitizeInputCoin) {
+                case "nikel":
+                    currencyInMachine = currencyInMachine + 0.05;
+                    output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
                     break;
-                case "dime": output = "Coin Accepted total is: ";
+                case "dime":
+                    currencyInMachine = currencyInMachine + 0.10;
+                    output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
+
                     break;
-                case "quarter": output = "Coin Accepted total is: ";
+                case "quarter":
+                    currencyInMachine = currencyInMachine + 0.25;
+                    output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
                     break;
             }
-        } else if (santizeInputCoin == "") {
+        } else if (sanitizeInputCoin == "") {
             output = "INSERT COIN";
         } else {
             output = "Rejected placed in coin return";
         }
         return output;
+    }
+
+    public void resetMachineCoinTotal() {
+        currencyInMachine = 0.00;
     }
 
 //    // Displays present amount

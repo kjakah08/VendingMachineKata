@@ -4,6 +4,8 @@ import com.company.VendingMachine;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.DecimalFormat;
+
 import static junit.framework.Assert.assertEquals;
 
 /**
@@ -13,8 +15,9 @@ public class VendingMachineTest {
 
     VendingMachine vendingMachine = new VendingMachine();
 
+    // INPUT TESTS:
     @Test
-    public void doNotAceptPennies() {
+    public void doNotAcceptPennies() {
         assertEquals("Rejected placed in coin return", vendingMachine.insertCoin("penny"));
     }
 
@@ -24,23 +27,29 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void acceptNikelDisplayTotal() {
-        assertEquals("Coin Accepted total is: ", vendingMachine.insertCoin("nikel"));
-    }
-
-    @Test
-    public void acceptDimeDisplayTotal() {
-        assertEquals("Coin Accepted total is: ", vendingMachine.insertCoin("dime"));
-    }
-
-    @Test
-    public void acceptQuarterDisplayTotal() {
-        assertEquals("Coin Accepted total is: ", vendingMachine.insertCoin("quarter"));
-    }
-
-    @Test
-    public void noCoindsDisplayInsertCoin() {
+    public void noCoinsDisplayInsertCoin() {
         assertEquals("INSERT COIN", vendingMachine.insertCoin(""));
     }
+
+    // Input Calculation tests:
+    @Test
+    public void shouldShow40CentsInMachine() {
+        vendingMachine.insertCoin("penny");
+        vendingMachine.insertCoin("dime");
+        vendingMachine.insertCoin("nikel");
+        assertEquals("Coin Accepted total is: 0.40", vendingMachine.insertCoin("quarter"));
+        vendingMachine.resetMachineCoinTotal();
+
+    }
+
+    @Test
+    public void shouldShow25CentsInMachine() {
+        vendingMachine.insertCoin("penny");
+        vendingMachine.insertCoin("dime");
+        vendingMachine.insertCoin("nikel");
+        assertEquals("Coin Accepted total is: 0.25", vendingMachine.insertCoin("dime"));
+        vendingMachine.resetMachineCoinTotal();
+    }
+
 
 }
