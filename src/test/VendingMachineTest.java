@@ -109,16 +109,20 @@ public class VendingMachineTest {
     @Test
     public void itemIsSoldOut() {
 
-        for (int i = 0; i <= 5; i++) {
-            vendingMachine.insertCoin("quarter");
+        String[] productChoices = {"chips", "cola", "candy"};
+
+        for (int i = 0; i < productChoices.length; i++) {
+            for (int j = 0; j <= 50; j++) {
+                vendingMachine.insertCoin("quarter");
+            }
+
+            vendingMachine.selectProduct(productChoices[i]);
+            vendingMachine.selectProduct(productChoices[i]);
+
+            assertEquals("SOLD OUT", vendingMachine.selectProduct(productChoices[i]));
+
+            vendingMachine.resetMachineCoinTotal();
         }
-
-        vendingMachine.selectProduct("chips");
-        vendingMachine.selectProduct("chips");
-
-        assertEquals("SOLD OUT", vendingMachine.selectProduct("chips"));
-
-        vendingMachine.resetMachineCoinTotal();
     }
 
     @Test
@@ -161,7 +165,7 @@ public class VendingMachineTest {
             vendingMachine.insertCoin("quarter");
         }
 
-        assertEquals("INSERT COINS, Returned: 7 quarter",  vendingMachine.returnCoins());
+        assertEquals("INSERT COINS, Returned: 7 quarter", vendingMachine.returnCoins());
 
         vendingMachine.resetMachineCoinTotal();
     }
