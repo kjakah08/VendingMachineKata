@@ -56,7 +56,7 @@ public class VendingMachine {
     }
 
     public String selectProduct(String productSelected) {
-        // 3 cases:
+
         // Checking money:
         if (checkPrice(productSelected) == 1) {
 
