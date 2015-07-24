@@ -63,7 +63,7 @@ public class VendingMachineTest {
     }
 
     @Test
-          public void tooMuchMoneyReturnsExactChangeNickel() {
+    public void tooMuchMoneyReturnsExactChangeNickel() {
         vendingMachine.insertCoin("penny");
         vendingMachine.insertCoin("quarter");
         vendingMachine.insertCoin("quarter");
@@ -106,6 +106,64 @@ public class VendingMachineTest {
     }
 
     // Inventory Tests:
+    @Test
+    public void itemIsSoldOut() {
 
+        for (int i = 0; i <= 5; i++) {
+            vendingMachine.insertCoin("quarter");
+        }
+
+        vendingMachine.selectProduct("chips");
+        vendingMachine.selectProduct("chips");
+
+        assertEquals("SOLD OUT", vendingMachine.selectProduct("chips"));
+
+        vendingMachine.resetMachineCoinTotal();
+    }
+
+    @Test
+    public void itemIsSoldOutSelectAnotherNotEnough() {
+
+        for (int i = 0; i < 6; i++) {
+            vendingMachine.insertCoin("quarter");
+        }
+
+        vendingMachine.selectProduct("chips");
+        vendingMachine.selectProduct("chips");
+
+        assertEquals("SOLD OUT", vendingMachine.selectProduct("chips"));
+        assertEquals("INSERT COINS", vendingMachine.selectProduct("cola"));
+
+        vendingMachine.resetMachineCoinTotal();
+    }
+
+    @Test
+    public void itemIsSoldOutSelectAnotherChange() {
+
+        for (int i = 0; i < 7; i++) {
+            vendingMachine.insertCoin("quarter");
+        }
+
+        vendingMachine.selectProduct("chips");
+        vendingMachine.selectProduct("chips");
+
+        assertEquals("SOLD OUT", vendingMachine.selectProduct("chips"));
+        assertEquals("THANK YOU, Returned: 1 dime", vendingMachine.selectProduct("candy"));
+
+        vendingMachine.resetMachineCoinTotal();
+    }
+
+    // Returning the 
+    @Test
+    public void noPurchaseCoinsReturned() {
+
+        for (int i = 0; i < 7; i++) {
+            vendingMachine.insertCoin("quarter");
+        }
+
+        assertEquals("INSERT COINS, Returned: 7 quarter",  vendingMachine.returnCoins());
+
+        vendingMachine.resetMachineCoinTotal();
+    }
 
 }

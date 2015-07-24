@@ -65,7 +65,6 @@ public class VendingMachine {
             if (checkInventoryLevel(productSelected) == 1) {
                 // Decrement the amount from total
                 currencyInMachine -= returnItemPrice(productSelected);
-                System.out.print("Amount in machine after purchasing " + productSelected + " is " + String.valueOf(currencyInMachine));
 
                 output = "THANK YOU," + makeChange(currencyInMachine);
 
@@ -77,6 +76,16 @@ public class VendingMachine {
             output = "INSERT COINS";
 
         }
+
+        return output;
+    }
+
+    // Did not purchase, returned coins:
+    public String returnCoins() {
+        String output="";
+
+        output = "INSERT COINS," + makeChange(currencyInMachine);
+        resetMachineCoinTotal();
 
         return output;
     }
@@ -117,7 +126,7 @@ public class VendingMachine {
                 break;
         }
 
-        if ((currencyInMachine - itemPrice) >= 0.00) {
+        if (round((currencyInMachine - itemPrice),2) >= 0.00) {
             priceCheckTest = 1;
         }
 
@@ -165,7 +174,7 @@ public class VendingMachine {
 
 
         // Return largest to smallest currency, quarters, dimes, nickels...
-        while (round(moneyInMachine,2) > 0.00) {
+        while (round(moneyInMachine, 2) > 0.00) {
 
             if (moneyInMachine - 0.25 >= 0.00) {
                 // Add a quarter:
@@ -174,7 +183,7 @@ public class VendingMachine {
 
             } else {
 
-                if (round(moneyInMachine,2) - 0.10 >= 0.00) {
+                if (round(moneyInMachine, 2) - 0.10 >= 0.00) {
 
                     // Add a dime
                     numberEachCoin[1] += 1;
