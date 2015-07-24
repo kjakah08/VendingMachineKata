@@ -34,18 +34,16 @@ public class VendingMachine {
             switch (sanitizeInputCoin) {
                 case "nickel":
                     currencyInMachine = currencyInMachine + 0.05;
-                    output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
                     break;
                 case "dime":
                     currencyInMachine = currencyInMachine + 0.10;
-                    output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
-
                     break;
                 case "quarter":
                     currencyInMachine = currencyInMachine + 0.25;
-                    output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
                     break;
             }
+            output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
+
         } else if (sanitizeInputCoin == "") {
             output = "INSERT COIN";
         } else {
@@ -62,19 +60,49 @@ public class VendingMachine {
 
             // Checking inventory, making sale, and sending back change if passed:
             if (checkInventoryLevel(productSelected) == 1) {
+                output = "THANK YOU";
 
             } else { // No more product:
-
-
+                output = "SOLD OUT";
             }
 
 
         } else {   // NOT enough money
+            output = "PRICE: " + returnItemPrice(productSelected).toString();
 
         }
 
         return output;
     }
+
+
+    public String checkDisplay() {
+        String output = null;
+
+
+        return output;
+    }
+
+
+    // Return item price:
+    public Double returnItemPrice(String productSelected) {
+        Double itemPrice = 0.00;
+
+        switch (productSelected) {
+            case "cola":
+                itemPrice = colaPrice;
+                break;
+            case "candy":
+                itemPrice = candyPrice;
+                break;
+            case "chips":
+                itemPrice = chipPrice;
+                break;
+        }
+
+        return itemPrice;
+    }
+
 
     // checking price against money in the machine
     public int checkPrice(String productSelected) {
@@ -99,6 +127,7 @@ public class VendingMachine {
 
         return priceCheckTest;
     }
+
 
     // checking inventory against users requests
     public int checkInventoryLevel(String productSelected) {
@@ -126,6 +155,7 @@ public class VendingMachine {
 
         return inventoryCheckTest;
     }
+
 
     // Holder method for change
     public String makeChange() {

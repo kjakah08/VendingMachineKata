@@ -59,6 +59,7 @@ public class VendingMachineTest {
         vendingMachine.insertCoin("quarter");
 
         assertEquals("THANK YOU", vendingMachine.selectProduct("chips"));
+        vendingMachine.resetMachineCoinTotal();
     }
 
     @Test
@@ -70,6 +71,7 @@ public class VendingMachineTest {
 
         assertEquals("THANK YOU, returned 1 nickel", vendingMachine.selectProduct("chips"));
         assertEquals(0.00, vendingMachine.currencyInMachine);
+        vendingMachine.resetMachineCoinTotal();
     }
 
     @Test
@@ -81,6 +83,7 @@ public class VendingMachineTest {
 
         assertEquals("THANK YOU, returned 1 quarter", vendingMachine.selectProduct("chips"));
         assertEquals(0.00, vendingMachine.currencyInMachine);
+        vendingMachine.resetMachineCoinTotal();
     }
 
     @Test
@@ -92,6 +95,7 @@ public class VendingMachineTest {
 
         assertEquals("THANK YOU, returned 1 nickel", vendingMachine.selectProduct("candy"));
         assertEquals(0.00, vendingMachine.currencyInMachine);
+        vendingMachine.resetMachineCoinTotal();
     }
 
     @Test
@@ -101,6 +105,7 @@ public class VendingMachineTest {
         vendingMachine.insertCoin("quarter");
 
         assertEquals("INSERT COINS", vendingMachine.selectProduct("candy"));
+        vendingMachine.resetMachineCoinTotal();
     }
 
     // Inventory Tests:
