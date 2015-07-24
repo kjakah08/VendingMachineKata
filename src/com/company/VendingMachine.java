@@ -1,6 +1,9 @@
 package com.company;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by KJA on 7/22/2015.
@@ -20,7 +23,7 @@ public class VendingMachine {
     Integer[] inventoryArray = {colaStock, candyStock, chipStock};
 
     DecimalFormat df = new DecimalFormat("0.00");
-    public static double currencyInMachine = 0.00;
+    public static Double currencyInMachine = 0.00;
     String output = "";
 
     public String insertCoin(String coinInserted) {
@@ -60,29 +63,23 @@ public class VendingMachine {
 
             // Checking inventory, making sale, and sending back change if passed:
             if (checkInventoryLevel(productSelected) == 1) {
-                output = "THANK YOU";
+                // Decrement the amount from total
+                currencyInMachine -= returnItemPrice(productSelected);
+                System.out.print("Amount in machine after purchasing " + productSelected + " is " + String.valueOf(currencyInMachine));
+
+                output = "THANK YOU," + makeChange(currencyInMachine);
 
             } else { // No more product:
                 output = "SOLD OUT";
             }
 
-
         } else {   // NOT enough money
-            output = "PRICE: " + returnItemPrice(productSelected).toString();
+            output = "INSERT COINS";
 
         }
 
         return output;
     }
-
-
-    public String checkDisplay() {
-        String output = null;
-
-
-        return output;
-    }
-
 
     // Return item price:
     public Double returnItemPrice(String productSelected) {
@@ -102,7 +99,6 @@ public class VendingMachine {
 
         return itemPrice;
     }
-
 
     // checking price against money in the machine
     public int checkPrice(String productSelected) {
@@ -158,14 +154,65 @@ public class VendingMachine {
 
 
     // Holder method for change
-    public String makeChange() {
+    public String makeChange(Double moneyInMachine) {
 
-        return "0";
+        // 0: Quarters, 1: Dimes, 2: Nickels
+        Integer[] numberEachCoin = {0, 0, 0};
+
+        String[] coinOutputString = {"", "", ""};
+
+        output = "ok";
+
+
+        // Return largest to smallest currency, quarters, dimes, nickels...
+        while (round(moneyInMachine,2) > 0.00) {
+
+            if (moneyInMachine - 0.25 >= 0.00) {
+                // Add a quarter:
+                numberEachCoin[0] += 1;
+                moneyInMachine -= 0.25;
+
+            } else {
+
+                if (round(moneyInMachine,2) - 0.10 >= 0.00) {
+
+                    // Add a dime
+                    numberEachCoin[1] += 1;
+                    moneyInMachine -= 0.10;
+
+                } else {
+                    // Add a nickel
+                    numberEachCoin[2] += 1;
+                    moneyInMachine -= 0.05;
+                }
+
+            }
+
+        }
+
+        // clean output:
+        coinOutputString[0] = (numberEachCoin[0] == 0) ? "" : numberEachCoin[0].toString() + " quarter";
+        coinOutputString[1] = (numberEachCoin[1] == 0) ? "" : numberEachCoin[1].toString() + " dime";
+        coinOutputString[2] = (numberEachCoin[2] == 0) ? "" : numberEachCoin[2].toString() + " nickel";
+
+        //output = (numberEachCoin[0] + numberEachCoin[1] + numberEachCoin[2] == 0) ? "" : "Returned: ";
+
+        return " Returned: " + coinOutputString[0] + coinOutputString[1] + coinOutputString[2];
+
     }
 
     // Setting total money input back (will need to calculate change in the future)
     public void resetMachineCoinTotal() {
         currencyInMachine = 0.00;
+    }
+
+    // Helper rounding:
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
 }
