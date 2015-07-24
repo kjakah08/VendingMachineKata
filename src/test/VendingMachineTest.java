@@ -153,7 +153,7 @@ public class VendingMachineTest {
         vendingMachine.resetMachineCoinTotal();
     }
 
-    // Returning the 
+    // Returning the
     @Test
     public void noPurchaseCoinsReturned() {
 

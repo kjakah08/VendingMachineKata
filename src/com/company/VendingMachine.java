@@ -10,7 +10,7 @@ import java.text.NumberFormat;
  */
 public class VendingMachine {
 
-    // IdealizeInventory as two of each: cola for $1.00, chips for $0.50, and candy for $0.65
+    // Initialize Inventory as two of each: cola for $1.00, chips for $0.50, and candy for $0.65
     // To allow simple updating of prices
     Double colaPrice = 1.00;
     Double candyPrice = 0.65;
@@ -22,10 +22,10 @@ public class VendingMachine {
 
     Integer[] inventoryArray = {colaStock, candyStock, chipStock};
 
-    DecimalFormat df = new DecimalFormat("0.00");
     public static Double currencyInMachine = 0.00;
     String output = "";
 
+    //******* USER ACTIONS BEGIN *******
     public String insertCoin(String coinInserted) {
 
         String sanitizeInputCoin = coinInserted.toLowerCase().trim();
@@ -36,16 +36,17 @@ public class VendingMachine {
         } else if (sanitizeInputCoin == "nickel" || sanitizeInputCoin == "dime" || sanitizeInputCoin == "quarter") {
             switch (sanitizeInputCoin) {
                 case "nickel":
-                    currencyInMachine = currencyInMachine + 0.05;
+                    currencyInMachine += 0.05;
                     break;
                 case "dime":
-                    currencyInMachine = currencyInMachine + 0.10;
+                    currencyInMachine += 0.10;
                     break;
                 case "quarter":
-                    currencyInMachine = currencyInMachine + 0.25;
+                    currencyInMachine += 0.25;
                     break;
             }
-            output = "Coin Accepted total is: " + String.valueOf(df.format(currencyInMachine));
+
+            output = "Coin Accepted total is: " + String.valueOf(new DecimalFormat("0.00").format(currencyInMachine));
 
         } else if (sanitizeInputCoin == "") {
             output = "INSERT COIN";
@@ -55,7 +56,6 @@ public class VendingMachine {
         return output;
     }
 
-    // Selection
     public String selectProduct(String productSelected) {
         // 3 cases:
         // Checking money:
@@ -74,7 +74,6 @@ public class VendingMachine {
 
         } else {   // NOT enough money
             output = "INSERT COINS";
-
         }
 
         return output;
@@ -82,14 +81,16 @@ public class VendingMachine {
 
     // Did not purchase, returned coins:
     public String returnCoins() {
-        String output="";
+        String output = "";
 
         output = "INSERT COINS," + makeChange(currencyInMachine);
         resetMachineCoinTotal();
 
         return output;
     }
+    //******* USER ACTIONS END *******
 
+    //******* MACHINE LOGIC HELPERS BEGIN *******
     // Return item price:
     public Double returnItemPrice(String productSelected) {
         Double itemPrice = 0.00;
@@ -126,13 +127,12 @@ public class VendingMachine {
                 break;
         }
 
-        if (round((currencyInMachine - itemPrice),2) >= 0.00) {
+        if (round((currencyInMachine - itemPrice), 2) >= 0.00) {
             priceCheckTest = 1;
         }
 
         return priceCheckTest;
     }
-
 
     // checking inventory against users requests
     public int checkInventoryLevel(String productSelected) {
@@ -161,7 +161,6 @@ public class VendingMachine {
         return inventoryCheckTest;
     }
 
-
     // Holder method for change
     public String makeChange(Double moneyInMachine) {
 
@@ -169,9 +168,6 @@ public class VendingMachine {
         Integer[] numberEachCoin = {0, 0, 0};
 
         String[] coinOutputString = {"", "", ""};
-
-        output = "ok";
-
 
         // Return largest to smallest currency, quarters, dimes, nickels...
         while (round(moneyInMachine, 2) > 0.00) {
@@ -204,8 +200,6 @@ public class VendingMachine {
         coinOutputString[1] = (numberEachCoin[1] == 0) ? "" : numberEachCoin[1].toString() + " dime";
         coinOutputString[2] = (numberEachCoin[2] == 0) ? "" : numberEachCoin[2].toString() + " nickel";
 
-        //output = (numberEachCoin[0] + numberEachCoin[1] + numberEachCoin[2] == 0) ? "" : "Returned: ";
-
         return " Returned: " + coinOutputString[0] + coinOutputString[1] + coinOutputString[2];
 
     }
@@ -214,8 +208,9 @@ public class VendingMachine {
     public void resetMachineCoinTotal() {
         currencyInMachine = 0.00;
     }
+    //******* MACHINE LOGIC HELPERS END *******
 
-    // Helper rounding:
+    // GENERAL HELPER METHODS:
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
